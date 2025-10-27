@@ -4,6 +4,14 @@ import { z } from "zod";
 import { knex } from "../database.js";
 import { randomUUID } from "node:crypto";
 
+interface MealParams {
+    id: string
+}
+
+interface MealRoutes {
+    Params: MealParams
+}
+
 export async function mealsRoutes(app: FastifyInstance) {
 
     app.post('/createmeals', {
@@ -47,7 +55,27 @@ export async function mealsRoutes(app: FastifyInstance) {
         return res.status(200).send(meals)
     })
 
-    app.put('/editmeal/:id', {
+    app.get<MealRoutes>('/:id', {
+        preHandler: [
+            authJwt
+        ]
+    }, async (req, res) => {
+        const mealId = req.params.id
+
+        try {
+            const meal = await knex('meals')
+                .select('*')
+                .where('id', mealId)
+
+            return res.status(200).send(meal)
+
+        } catch (error) {
+            console.error(error)
+            return res.status(500).send("System error")
+        } 
+    })
+
+    app.put<MealRoutes>('/editmeal/:id', {
         preHandler: [
             authJwt
         ]
@@ -69,7 +97,7 @@ export async function mealsRoutes(app: FastifyInstance) {
                 .where('id', mealId)
                 .update({
                     name,
-                    description,
+                      description,
                     date_time,
                     is_on_diet
                 })
@@ -85,5 +113,25 @@ export async function mealsRoutes(app: FastifyInstance) {
             return res.status(500).send("System error")
         }
 
+    })
+
+    app.delete<MealRoutes>('/deletemeal/:id', {
+        preHandler: [
+            authJwt
+        ]
+    }, async (req, res) => {
+        const mealId = req.params.id
+
+        try {
+            await knex('meals')
+                .where('id', mealId)
+                .delete()
+            
+            return res.status(200).send('The meal was deleted successfully')
+
+        } catch (error) {
+            console.error(error)
+            return res.status(500).send("System error")
+        }
     })
 } 
