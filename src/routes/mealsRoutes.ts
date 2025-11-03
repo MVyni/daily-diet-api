@@ -134,4 +134,38 @@ export async function mealsRoutes(app: FastifyInstance) {
             return res.status(500).send("System error")
         }
     })
+
+    app.get<MealRoutes>('/metrics/:id', {
+        preHandler: [
+            authJwt
+        ]
+    }, async (req, res) => {
+        const userId = req.params.id
+
+        try {
+            const totalMeals = await knex('meals')
+                .where('user_id', userId)
+                .orderBy('date_time', 'desc')
+            
+            const mealsOnDiet = await knex('meals')
+                .where({ user_id: userId, is_on_diet: true })
+                .count('id', {as: 'total'})
+                .first()
+            
+            const mealsOffDiet = await knex('meals')
+                .where({ user_id: userId, is_on_diet: false })
+                .count('id', { as: 'total' })
+                .first()
+            
+            return res.status(200).send({
+                totalMeals: totalMeals.length,
+                mealsOnDiet: mealsOnDiet?.total,
+                mealsOffDiet: mealsOffDiet?.total
+            })
+
+        } catch (error) {
+            console.error(error)
+            return res.status(500).send("System error")
+        }
+    })
 } 
