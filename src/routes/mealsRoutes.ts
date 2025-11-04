@@ -157,10 +157,26 @@ export async function mealsRoutes(app: FastifyInstance) {
                 .count('id', { as: 'total' })
                 .first()
             
+            const { bestOnDietSequence } = totalMeals.reduce((acc, meal) => {
+                if (meal.is_on_diet) {
+                    acc.currentDiet += 1
+                } else {
+                    acc.currentDiet = 0
+                }
+
+                if (acc.currentDiet > acc.bestOnDietSequence) {
+                    acc.bestOnDietSequence = acc.currentDiet
+                }
+
+                return acc
+
+            }, { bestOnDietSequence: 0, currentDiet: 0})
+            
             return res.status(200).send({
                 totalMeals: totalMeals.length,
                 mealsOnDiet: mealsOnDiet?.total,
-                mealsOffDiet: mealsOffDiet?.total
+                mealsOffDiet: mealsOffDiet?.total,
+                bestOnDietSequence: bestOnDietSequence 
             })
 
         } catch (error) {
