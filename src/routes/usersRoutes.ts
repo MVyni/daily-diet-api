@@ -8,7 +8,7 @@ import { env } from "../../env/index.js";
 import { authJwt } from "../configs/getToken.js";
 
 export async function usersRoutes(app:FastifyInstance) {
-    app.post('/create', async (req, res) => {
+    app.post('/createuser', async (req, res) => {
 
         const createUserBodySchema = z.object({
             name: z.string(),

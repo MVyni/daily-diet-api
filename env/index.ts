@@ -2,7 +2,7 @@ import { config } from 'dotenv'
 import { z } from 'zod'
 
 if (process.env.NODE_ENV === 'test') {
-    config({path: '.env.test'})
+    config({ path: '.env.test' })
 } else {
     config()
 }
@@ -19,7 +19,6 @@ const _env = envSchema.safeParse(process.env)
 
 if (_env.success === false) {
     console.error('Invalid enviroment variables!', _env.error.format)
-
     throw new Error('Invalid enviroment variables ')
 }
 

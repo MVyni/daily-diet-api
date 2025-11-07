@@ -1,6 +1,6 @@
+import { env } from "../env/index.js"
 import type { Knex } from "knex"
 import setupKnex from "knex"
-import { env } from "../env/index.js"
 
 export const config: Knex.Config = {
     client: env.DATABASE_CLIENT,
