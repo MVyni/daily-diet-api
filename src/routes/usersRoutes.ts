@@ -45,23 +45,23 @@ export async function usersRoutes(app:FastifyInstance) {
         })
 
         const { email, password_hash } = createLoginBodySchema.parse(req.body)
-
+        
         const user = await knex('users')
             .where('email', email)
             .first()
-
-        const checkPassword = await bcrypt.compare(password_hash, user.password_hash)
-        
-        if (user.email !== email || !checkPassword ) {
-            return res.status(401).send("Email and/or password invalid")
+            
+            const checkPassword = await bcrypt.compare(password_hash, user.password_hash)
+            
+            if (user.email !== email || !checkPassword ) {
+                return res.status(401).send("Email and/or password invalid")
         }
-
-        const token = jwt.sign({
-            id: user.id,
-            email: user.email
-        }, env.SECRET_JWT, { expiresIn: "1D"})
-        
-        return { token }
+            
+            const token = jwt.sign({
+                id: user.id,
+                email: user.email
+            }, env.SECRET_JWT, { expiresIn: "1D" })
+            
+            return { token }
     })
 
     app.get('/', {
