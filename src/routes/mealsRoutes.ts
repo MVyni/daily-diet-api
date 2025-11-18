@@ -97,7 +97,7 @@ export async function mealsRoutes(app: FastifyInstance) {
                 .where('id', mealId)
                 .update({
                     name,
-                      description,
+                    description,
                     date_time,
                     is_on_diet
                 })
