@@ -26,15 +26,18 @@ export async function usersRoutes(app:FastifyInstance) {
         const salt = await bcrypt.genSalt(10)
         const passwordHash = await bcrypt.hash(password, salt)
         
-        await knex('users')
+        const userResponse = await knex('users')
         .insert({
             id: randomUUID(),
             name,
             email,
             password_hash: passwordHash
         })
+            .returning('*')
         
-        return res.status(201).send("User created successfully")
+        const [user] = userResponse 
+        
+        return res.status(201).send(user)
     })
 
     app.post('/login', async (req, res) => {
@@ -61,7 +64,7 @@ export async function usersRoutes(app:FastifyInstance) {
                 email: user.email
             }, env.SECRET_JWT, { expiresIn: "1D" })
             
-            return { token }
+            return res.status(200).send({ user, token })
     })
 
     app.get('/', {

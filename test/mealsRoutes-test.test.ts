@@ -189,4 +189,116 @@ describe("Meals Routes", () => {
             })
             .expect(200)
     })
+
+    it('The user should be able to delete a especific meal', async () => {
+        const createUserResponse = await request(app.server)
+            .post('/users/createuser')
+            .send({
+                user_id: '123',
+                name: 'Marcus Vynicius',
+                email: 'marcusvynicius@teste.com',
+                password: 'marcusvynicius',
+                confirmPassword: 'marcusvynicius'
+            })
+            .expect(201)
+
+        const loginUserResponse = await request(app.server)
+            .post('/users/login')
+            .send({
+                email: 'marcusvynicius@teste.com',
+                password_hash: 'marcusvynicius'
+            })
+            .expect(200)
+
+        const authToken = loginUserResponse.body.token
+
+        const createMealsResponse = await request(app.server)
+            .post("/meals/createmeals")
+            .set("Authorization", `Bearer ${authToken}`)
+            .send({
+                name: 'Rice with meat',
+                description: '200g of rice and 150g of meat',
+                date_time: '2025-11-14T19:04:00.000Z',
+                is_on_diet: true
+            })
+            .expect(201)
+
+        const createGetAllMeals = await request(app.server)
+            .get("/meals/")
+            .set('Authorization', `Bearer ${authToken}`)
+            .expect(200)
+
+        const mealId = createGetAllMeals.body[0].id
+
+        const deleteMeal = await request(app.server)
+            .delete(`/meals/deletemeal/${mealId}`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .expect(200)
+
+        expect(deleteMeal.body).toEqual({})
+    })
+
+    it('Should be able to list the all metrics', async () => {
+        const createUserResponse = await request(app.server)
+            .post('/users/createuser')
+            .send({
+                user_id: '123',
+                name: 'Marcus Vynicius',
+                email: 'marcusvynicius@teste.com',
+                password: 'marcusvynicius',
+                confirmPassword: 'marcusvynicius'
+            })
+            .expect(201)
+
+        const loginUserResponse = await request(app.server)
+            .post('/users/login')
+            .send({
+                email: 'marcusvynicius@teste.com',
+                password_hash: 'marcusvynicius'
+            })
+            .expect(200)
+
+        const authToken = loginUserResponse.body.token
+
+        const createMealsResponse = await request(app.server)
+            .post("/meals/createmeals")
+            .set("Authorization", `Bearer ${authToken}`)
+            .send({
+                name: 'Rice with meat',
+                description: '200g of rice and 150g of meat',
+                date_time: '2025-11-14T19:04:00.000Z',
+                is_on_diet: true
+            })
+            .expect(201)
+        
+        const createMealsResponse2 = await request(app.server)
+            .post("/meals/createmeals")
+            .set("Authorization", `Bearer ${authToken}`)
+            .send({
+                name: 'Strogonoff of meat with fries',
+                description: '200g of rice, 150g of chicken and fries',
+                date_time: '2025-11-14T19:04:00.000Z',
+                is_on_diet: true
+            })
+            .expect(201)
+        
+        const createGetAllMeals = await request(app.server)
+            .get("/meals/")
+            .set('Authorization', `Bearer ${authToken}`)
+            .expect(200)
+
+        const mealId = createGetAllMeals.body
+
+        const userId = createUserResponse.body.id
+
+        const getMetricsMealsResponse = await request(app.server)
+            .get(`/meals/metrics/${userId}`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .expect(200)
+
+            expect(getMetricsMealsResponse.body.totalMeals).toBe(2)
+            expect(getMetricsMealsResponse.body.mealsOnDiet).toBe(2)
+            expect(getMetricsMealsResponse.body.mealsOffDiet).toBe(0)
+            expect(getMetricsMealsResponse.body.bestOnDietSequence).toBe(2)
+    })
 })
