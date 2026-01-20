@@ -54,7 +54,7 @@ Siga as instruções abaixo para construir e executar o projeto de forma simples
 
 Certifique-se de ter instalado:
 
-- **Node.js** (versão 18 ou superior) ❤️
+- **Node.js** (versão 18 ou superior)
 - **PostgreSQL** (ou SQLite para desenvolvimento)
 - **npm** ou **yarn**
 
@@ -169,22 +169,7 @@ A **Daily Diet API** foi desenvolvida seguindo os princípios de uma arquitetura
 - **Vitest**: Framework de testes rápido e moderno.
 - **Supertest**: Biblioteca para testes de integração de APIs HTTP.
 
-### Estrutura do Projeto
 
-```
-src/
-├── @types/          # Definições de tipos TypeScript
-├── configs/         # Configurações da aplicação (JWT, etc)
-├── routes/          # Definição das rotas da API
-│   ├── usersRoutes.ts
-│   └── mealsRoutes.ts
-├── app.ts           # Configuração do Fastify
-├── server.ts        # Ponto de entrada da aplicação
-└── database.ts      # Configuração do banco de dados
-db/
-└── migrations/      # Migrations do banco de dados
-test/                # Testes da aplicação
-```
 
 ## Tecnologias 💻
 
@@ -226,7 +211,3 @@ test/                # Testes da aplicação
     - [x] Quantidade total de refeições fora da dieta
     - [x] Melhor sequência de refeições dentro da dieta
 - [x] O usuário só pode visualizar, editar e apagar as refeições o qual ele criou
-
-## Licença 📋
-
-Este projeto está sob a licença ISC. Sinta-se à vontade para usar, estudar e contribuir com o projeto. ❤️
