@@ -202,7 +202,7 @@ test/                # Testes da aplicação
 - **tsx**: Executor TypeScript para desenvolvimento
 - **vitest**: Framework de testes
 - **supertest**: Testes de APIs HTTP
-- **@types/\***: Definições de tipos TypeScript
+- **@types/***: Definições de tipos TypeScript
 
 ## Funcionalidades implementadas ✅
 
