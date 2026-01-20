@@ -170,7 +170,6 @@ A **Daily Diet API** foi desenvolvida seguindo os princípios de uma arquitetura
 - **Supertest**: Biblioteca para testes de integração de APIs HTTP.
 
 
-
 ## Tecnologias 💻
 
 ### Dependências principais
@@ -211,7 +210,3 @@ A **Daily Diet API** foi desenvolvida seguindo os princípios de uma arquitetura
     - [x] Quantidade total de refeições fora da dieta
     - [x] Melhor sequência de refeições dentro da dieta
 - [x] O usuário só pode visualizar, editar e apagar as refeições o qual ele criou
-
-## Licença 📋
-
-Este projeto está sob a licença ISC. Sinta-se à vontade para usar, estudar e contribuir com o projeto. ❤️
